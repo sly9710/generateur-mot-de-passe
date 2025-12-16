@@ -1,0 +1,164 @@
+ <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Générateur de mot de passe</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app {
+  background: #ffffff;
+  width: 360px;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+  text-align: center;
+}
+
+h2 {
+  margin-top: 0;
+  color: #1f2937;
+}
+
+.conditions {
+  font-size: 13px;
+  color: #374151;
+  background: #f3f4f6;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.conditions ul {
+  padding-left: 18px;
+  margin: 0;
+}
+
+input[type="number"],
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  text-align: center;
+}
+
+input[type="text"] {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+.copy {
+  background: #059669;
+}
+
+.copy:hover {
+  background: #047857;
+}
+
+.footer {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <h2>Générateur de mot de passe</h2>
+
+  <div class="conditions">
+    <strong>Créer facilement un mot de passe respectant les normes de sécurité principales :</strong>
+    <ul>
+      <li>Minimum 12 caractères</li>
+      <li>Au moins une majuscule</li>
+      <li>Au moins une minuscule</li>
+      <li>Au moins un chiffre</li>
+      <li>Au moins un caractère spécial</li>
+    </ul>
+  </div>
+
+  <label>Longueur du mot de passe</label>
+  <input type="number" id="len" min="12" value="12">
+
+  <button onclick="gen()">Générer le mot de passe</button>
+
+  <input type="text" id="out" readonly>
+
+  <button class="copy" onclick="copy()">Copier</button>
+
+  <div class="footer">
+    Génération locale • Hors ligne
+  </div>
+</div>
+
+<script>
+function gen() {
+  let n = document.getElementById("len").value;
+  if (n < 12) {
+    alert("La longueur minimale est de 12 caractères.");
+    return;
+  }
+
+  const lower = "abcdefghijklmnopqrstuvwxyz";
+  const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const digits = "0123456789";
+  const special = "!@#$%^&*()_-+=<>?/{}[]";
+
+  let pwd = [
+    lower[Math.floor(Math.random() * lower.length)],
+    upper[Math.floor(Math.random() * upper.length)],
+    digits[Math.floor(Math.random() * digits.length)],
+    special[Math.floor(Math.random() * special.length)]
+  ];
+
+  const all = lower + upper + digits + special;
+  for (let i = 0; i < n - 4; i++) {
+    pwd.push(all[Math.floor(Math.random() * all.length)]);
+  }
+
+  pwd.sort(() => Math.random() - 0.5);
+  document.getElementById("out").value = pwd.join("");
+}
+
+function copy() {
+  navigator.clipboard.writeText(
+    document.getElementById("out").value
+  );
+  alert("Mot de passe copié dans le presse-papiers.");
+}
+</script>
+
+</body>
+</html>
